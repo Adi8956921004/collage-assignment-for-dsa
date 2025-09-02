@@ -1,0 +1,73 @@
+from collections import Counter
+
+# Function Definitions
+def compute_average(records):
+    total = sum(records.values())
+    count = len(records)
+    return total / count
+
+def find_max_min(records):
+    non_zero_values = [val for val in records.values() if val > 0]
+    max_borrow = max(records.values()) if records else 0
+    min_borrow = min(non_zero_values) if non_zero_values else 0
+    return max_borrow, min_borrow
+
+def count_zero_borrowers(records):
+    return list(records.values()).count(0)
+
+def find_mode(records):
+    non_zero_values = [val for val in records.values() if val > 0]
+    if not non_zero_values:
+        return None
+    freq = Counter(non_zero_values)
+    most_common = freq.most_common(1)[0][0]
+    return most_common
+
+def display_records(records):
+    print("\n--- Borrow Records ---")
+    for name, count in records.items():
+        print(f"{name}: {count} books")
+
+# Input Records
+borrow_records = {}
+n = int(input("Enter number of members: "))
+for _ in range(n):
+    name = input("Enter member name: ")
+    books = int(input(f"Enter number of books borrowed by {name}: "))
+    borrow_records[name] = books
+
+# Menu-Driven Program
+while True:
+    print("\n--- Menu ---")
+    print("1. Compute average number of books borrowed")
+    print("2. Find max and min (excluding 0 for min)")
+    print("3. Count members who borrowed 0 books")
+    print("4. Most frequently borrowed count (mode)")
+    print("5. Display all borrow records")
+    print("6. Exit")
+
+    choice = input("Enter your choice (1-6): ")
+
+    if choice == '1':
+        avg = compute_average(borrow_records)
+        print("Average books borrowed:", round(avg, 2))
+    elif choice == '2':
+        max_b, min_b = find_max_min(borrow_records)
+        print("Maximum borrowed:", max_b)
+        print("Minimum borrowed (excluding zero):", min_b)
+    elif choice == '3':
+        zero = count_zero_borrowers(borrow_records)
+        print("Members who borrowed 0 books:", zero)
+    elif choice == '4':
+        mode = find_mode(borrow_records)
+        if mode is not None:
+            print("Most frequently borrowed count (mode, excluding zero):", mode)
+        else:
+            print("No valid (non-zero) borrowings to compute mode.")
+    elif choice == '5':
+        display_records(borrow_records)
+    elif choice == '6':
+        print("Exiting the program. Goodbye!")
+        break
+    else:
+        print("Invalid choice. Please enter a number between 1 and 6.")
