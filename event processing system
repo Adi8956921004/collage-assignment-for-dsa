@@ -1,0 +1,67 @@
+from collections import deque
+
+class EventQueueSystem:
+    def __init__(self):
+        self.queue = deque()
+
+    def add_event(self, event):
+        """Add a new event to the queue."""
+        self.queue.append(event)
+        print(f"Event '{event}' added to queue.")
+
+    def process_next_event(self):
+        """Process the next event (FIFO)."""
+        if self.queue:
+            event = self.queue.popleft()
+            print(f"Processing event: {event}")
+        else:
+            print("No events to process.")
+
+    def display_pending_events(self):
+        """Display all events waiting to be processed."""
+        if self.queue:
+            print("Pending events:", list(self.queue))
+        else:
+            print("No pending events.")
+
+    def cancel_event(self, event):
+        """Cancel an event if it exists in the queue."""
+        if event in self.queue:
+            self.queue.remove(event)
+            print(f"Event '{event}' canceled.")
+        else:
+            print(f"Event '{event}' not found or already processed.")
+
+
+def main():
+    system = EventQueueSystem()
+
+    while True:
+        print("\n==== Event Queue System ====")
+        print("1. Add an Event")
+        print("2. Process Next Event")
+        print("3. Display Pending Events")
+        print("4. Cancel an Event")
+        print("5. Exit")
+        
+        choice = input("Enter your choice (1-5): ")
+
+        if choice == "1":
+            event = input("Enter event name: ")
+            system.add_event(event)
+        elif choice == "2":
+            system.process_next_event()
+        elif choice == "3":
+            system.display_pending_events()
+        elif choice == "4":
+            event = input("Enter event name to cancel: ")
+            system.cancel_event(event)
+        elif choice == "5":
+            print("Exiting system. Goodbye!")
+            break
+        else:
+            print("Invalid choice. Please enter a number between 1-5.")
+
+
+if __name__ == "__main__":
+    main()
