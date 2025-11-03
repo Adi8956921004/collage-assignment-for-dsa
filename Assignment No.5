@@ -1,0 +1,61 @@
+# Hash Table implementation with Chaining
+class HashTable:
+    def __init__(self, size=10):
+        self.size = size
+        self.table = [[] for _ in range(size)]  # each index has a list (for chaining)
+
+    # Hash function using division method
+    def hash_function(self, key):
+        return key % self.size
+
+    # Insert key-value pair
+    def insert(self, key, value):
+        index = self.hash_function(key)
+        # check if key already exists, update it
+        for pair in self.table[index]:
+            if pair[0] == key:
+                pair[1] = value
+                return
+        # otherwise, add new pair
+        self.table[index].append([key, value])
+
+    # Search for value using key
+    def search(self, key):
+        index = self.hash_function(key)
+        for pair in self.table[index]:
+            if pair[0] == key:
+                return pair[1]
+        return None  # not found
+
+    # Delete key-value pair
+    def delete(self, key):
+        index = self.hash_function(key)
+        for pair in self.table[index]:
+            if pair[0] == key:
+                self.table[index].remove(pair)
+                return True
+        return False  # not found
+
+    # Display hash table
+    def display(self):
+        for i, bucket in enumerate(self.table):
+            print(f"Index {i}: {bucket}")
+
+
+# Example usage
+ht = HashTable()
+
+# Insert
+ht.insert(15, "Apple")
+ht.insert(25, "Banana")  # collision with 15 (since 15 % 10 == 25 % 10)
+ht.insert(7, "Mango")
+
+ht.display()
+
+# Search
+print("Search 25:", ht.search(25))
+print("Search 100:", ht.search(100))
+
+# Delete
+ht.delete(15)
+ht.display()
